@@ -10,16 +10,21 @@ const Todo = () => {
 
     const fetchPost = async () => {
 
+        // await getDocs(collection(db, `users`))
+        //     .then((querySnapshot) => {
+        //         const newUsers = querySnapshot.docs.map((doc) => doc.data())
+        //         setTodos(newUsers[0].userEmails)
+        //     })
+        //     .catch(error => console.log(error))
+
         await getDocs(collection(db, "todos"))
             .then((querySnapshot) => {
                 const newData = querySnapshot.docs
-                    .map((doc) => ({...doc.data()}));
+                    .map((doc) => ({ ...doc.data(), id: doc.id }));
                 setTodos(newData);
-                console.log("newData: ", newData);
-                console.log("todos2: ", todos)
-
+                console.log(todos, newData);
             })
-            .catch(error => console.log(error))
+
 
     }
 
@@ -35,7 +40,7 @@ const Todo = () => {
             const docRef = await addDoc(collection(db, "todos"), {
                 todo: todo,
             });
-            console.log("Document written with ID: ", docRef.id);
+            console.log("Document written with ID:", docRef.id);
         } catch (e) {
             console.error("Error adding document: ", e);
         }
@@ -70,15 +75,26 @@ const Todo = () => {
 
                 </div>
 
+                {/* <div className="todo-content">
+                    {
+                        todos?.map((todo, i) => (
+                            <p key={i}>
+                                STT: {i} - Content: {todo}
+                            </p>
+                        ))
+                    }
+                </div> */}
+
                 <div className="todo-content">
                     {
                         todos?.map((todo, i) => (
                             <p key={i}>
-                                STT: {i} - Content: {todo?.creator}
+                                {todo.todo}
                             </p>
                         ))
                     }
                 </div>
+
             </div>
         </section>
     )

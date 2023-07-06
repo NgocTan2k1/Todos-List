@@ -156,9 +156,15 @@
     }
 }
 
+.container-task {
+    display: block;
+    text-align: start;
+    margin: auto;
+    margin: 30px 10px 0 10px;
+}
+
 .list-task {
     display: block;
-    margin-top: 24px;
 
 }
 
@@ -174,7 +180,7 @@
         height: 28px;
         width: 28px;
         border-radius: 50%;
-        background-image: url("../../img/checked.png");
+        background-image: url("../../img/unchecked.png");
         background-size: cover;
         background-position: center;
         top: 2%;
@@ -191,7 +197,7 @@
         height: 28px;
         width: 28px;
         border-radius: 50%;
-        background-image: url("../../img/unchecked.png");
+        background-image: url("../../img/checked.png");
         background-size: cover;
         background-position: center;
         top: 2%;
