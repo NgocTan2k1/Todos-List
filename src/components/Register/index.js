@@ -1,19 +1,30 @@
 import React, { useState } from "react";
 import { Button, Form, Input, Modal } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { getAuth } from 'firebase/auth';
 
 import classNames from "classnames/bind";
-import styles from "./Register.scss";
+import styles from "./Register.module.scss";
+import { app } from '../../firebase';
 
 const cx = classNames.bind(styles);
+const auth = getAuth(app);
 
 function Register() {
-    const [title, setTitle] = useState("Register isn't success");
+    const [title, setTitle] = useState("");
     const [detail, setDetail] = useState("");
+    const navigate = useNavigate();
+    const [
+        createUserWithEmailAndPassword,
+        user,
+        loading,
+        error,
+    ] = useCreateUserWithEmailAndPassword(auth);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const onFinish = (values) => {
-        console.log("Success:", values);
+
+    async function onFinish(values) {
 
         // Validation
         if (!values.email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
@@ -21,21 +32,39 @@ function Register() {
             // Logic => show modal notice.
             setDetail("This isn't an email");
             showModal();
-        } else {
-            if(values.password !== values.confirmpassword) {
+        }
+        else {
+            if (values.password !== values.confirmpassword) {
                 // False => password to register
-                // Logic => show modal notice.
+                // Logic => show modal notice. 
+                setTitle("Register isn't success");
                 setDetail("Password and Confirm Password don't match");
                 showModal();
             } else {
-                setTitle("Register is success");
-                setDetail("Call Api Register");
-                showModal();
+                createUserWithEmailAndPassword(values.email, values.password)
+                    .then(res => {
+                        if (!res) {
+                            setTitle("Register isn't success");
+                            setDetail("Please check email or passwork");
+                            showModal();
+                        } else {
+                            console.log(res.user.uid);
+                            navigate("/todos-list");
+                        }
+
+                    })
             }
         }
+
+
+
+
     };
+
+
     const onFinishFailed = (errorInfo) => {
         console.log("Failed:", errorInfo);
+        setTitle("Register isn't success");
         setDetail("You must enter fully the information to register");
         showModal();
 
@@ -62,7 +91,7 @@ function Register() {
             <h1 className={cx("title")}>Register</h1>
             <div className={cx("form-wrapper")}>
                 <Form
-                    name="basic"
+                    rootClassName={cx("form")}
                     labelCol={{
                         span: 8,
                     }}
@@ -111,7 +140,7 @@ function Register() {
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input your password!',
+                                message: 'Please input your confirm password!',
                             },
                         ]}
                     >
@@ -124,7 +153,7 @@ function Register() {
                             span: 16,
                         }}
                     >
-                        <Button type="primary" htmlType="submit">
+                        <Button rootClassName={cx("btn-register")} type="primary" htmlType="submit">
                             Register
                         </Button>
 

@@ -1,0 +1,200 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", "sans-serif";
+    box-sizing: border-box;
+}
+
+.wrapper {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #153667, #4e085f);
+    padding: 10px;
+}
+
+.todo-app {
+    width: 80%;
+    // max-width: ;
+    background: #fff;
+    margin: 60px auto 20px;
+    padding: 20px 30px 70px;
+    border-radius: 10px;
+    justify-content: center;
+
+    .title {
+        display: flex;
+        color: #002764;
+        text-align: center;
+        vertical-align: middle;
+        justify-content: center;
+
+        .img-icon {
+            width: 60px;
+            margin-left: 10px;
+        }
+    }
+}
+
+.title {}
+
+.img-icon {}
+
+.form-input {
+    display: flex;
+    position: relative;
+    justify-items: center;
+    justify-content: space-between;
+    width: 80%;
+    background: #eddef0;
+    border-radius: 30px;
+    padding-left: 30px;
+    margin: 25px auto 25px;
+}
+
+.item-input {
+    display: block;
+    width: 100%;
+    justify-content: space-between;
+    margin: auto 4px;
+}
+
+.item-input-content {
+    width: 60%;
+    padding-right: 4px;
+}
+
+.item-input-date {
+    display: flexbox;
+    flex: content;
+    flex: 1;
+    width: 20%;
+}
+
+.item-input-assign {
+    display: flexbox;
+    flex: content;
+    flex: 1;
+    width: 20%;
+    margin-left: 4px;
+}
+
+.label-input {
+    position: relative;
+    width: 20%;
+}
+
+.label-input-content::after {
+    position: absolute;
+    content: "";
+    color: #000;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 1px;
+    height: 28px;
+    margin-left: 8px;
+
+    background: #000;
+}
+
+.label-input-date {
+    display: block;
+    text-align: center;
+    width: 100%;
+}
+
+.label-input-assign {
+    display: block;
+    text-align: center;
+    width: 100%;
+}
+
+
+.input {
+    flex: 1;
+    width: 80%;
+    height: 36px;
+    padding: 4px;
+    margin-left: 20px;
+    border: none;
+    outline: none;
+    background: transparent;
+
+    font-size: 16px;
+    font-weight: 500;
+
+    +.input-date {
+        width: 100%;
+        margin-left: 0px;
+    }
+
+    +.input-assign {
+        border: 1px solid #ccc;
+        width: 20%;
+        outline: #fff;
+    }
+}
+
+.btn-input {
+    // position: absolute;
+    // right: 0;
+    // top: 50%;
+    // transform: translateY(-50%);
+
+    border: none;
+    outline: none;
+    padding: 16px 50px;
+    background: rgb(255, 89, 69);
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 30px;
+
+    &::hover {
+        background: rgba(255, 89, 69, 0.5);
+    }
+}
+
+.list-task {
+    display: block;
+    margin-top: 24px;
+
+}
+
+.task {
+    position: relative;
+    list-style: none;
+    font-size: 17px;
+    padding: 8px 8px 8px 80px;
+
+    &::before {
+        content: "";
+        position: absolute;
+        height: 28px;
+        width: 28px;
+        border-radius: 50%;
+        background-image: url("../../img/checked.png");
+        background-size: cover;
+        background-position: center;
+        top: 2%;
+        left: 1%;
+    }
+    &.unchecked {
+        color: #555;
+        text-decoration: line-through;
+    }
+
+    &.unchecked::before{
+        content: "";
+        position: absolute;
+        height: 28px;
+        width: 28px;
+        border-radius: 50%;
+        background-image: url("../../img/unchecked.png");
+        background-size: cover;
+        background-position: center;
+        top: 2%;
+        left: 1%;
+    }
+}

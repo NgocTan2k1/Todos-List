@@ -1,33 +1,58 @@
 import React, { useState } from "react";
 import { Button, Form, Input, Modal } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { getAuth } from 'firebase/auth';
+import { useAuthState, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { app } from '../../firebase';
+
 
 import classNames from "classnames/bind";
-import styles from "./Login.scss";
+import styles from "./Login.module.scss";
 
 const cx = classNames.bind(styles);
 
 function Login() {
+    const navigate = useNavigate();
+    const auth = getAuth(app);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [title, setTitle] = useState("Log in isn't success");
+    const [title, setTitle] = useState("");
     const [detail, setDetail] = useState("");
+    const [
+        signInWithEmailAndPassword,
+    ] = useSignInWithEmailAndPassword(auth);
+
+    const [user, loading, error] = useAuthState(auth);
+    if(!loading) {
+        if(user) {
+            navigate("/todos-list");
+        }
+    }
 
     const onFinish = (values) => {
         console.log("Success:", values);
-        
+
         // Validation
         if (!values.email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
-            
             // False => email
             // Logic
+            setTitle("Log in isn't success");
             setDetail("This isn't an email");
             showModal();
         } else {
             // True
             // Call api
-            setTitle("Login is success");
-            setDetail("Call Api login");
-            showModal();
+            signInWithEmailAndPassword(values.email, values.password)
+                .then(res => {
+                    if (!res) {
+                        setTitle("Log in isn't success");
+                        setDetail("Email or password is not true");
+                        showModal()
+                    } else {
+                        console.log(res);
+                        navigate("/todos-list")
+                    }
+
+                })
         }
     };
     const onFinishFailed = (errorInfo) => {
@@ -58,8 +83,7 @@ function Login() {
             <h1 className={cx("title")}>Login</h1>
             <div className={cx("form-wrapper")}>
                 <Form
-                    rootClassName="form"
-                    name="basic"
+                    rootClassName={cx("form")}
                     labelCol={{
                         span: 8,
                     }}
@@ -108,7 +132,7 @@ function Login() {
                             span: 16,
                         }}
                     >
-                        <Button type="primary" htmlType="submit">
+                        <Button rootClassName={cx("btn-login")} type="primary" htmlType="submit">
                             Login
                         </Button>
                         <Link className={cx("link-register")} to="/register" >You don't account</Link>
