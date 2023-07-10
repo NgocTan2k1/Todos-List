@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { collection, getDocs, addDoc, getFirestore } from "firebase/firestore";
 import { app } from "../../firebase";
 import "./test.css";
-import { List, Skeleton } from "antd";
+import { List, Skeleton, Button } from "antd";
 const Todo = () => {
   const [todo, setTodo] = useState("");
   const [todos, setTodos] = useState([]);
@@ -20,25 +20,19 @@ const Todo = () => {
     //     })
     //     .catch(error => console.log(error))
 
-    await getDocs(collection(db, "todos")).then((querySnapshot) => {
-      const newData = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setTodos(newData);
-      console.log("newData:", newData);
-    });
+    // await getDocs(collection(db, "todos")).then((querySnapshot) => {
+    //   const newData = querySnapshot.docs.map((doc) => ({
+    //     ...doc.data(),
+    //     id: doc.id,
+    //   }));
+    //   setTodos(newData);
+    //   console.log("newData:", newData);
+    // });
   };
 
   useEffect(() => {
-    fetchPost();
-    fetch(`https://randomuser.me/api/?results=${10}&inc=name,gender,email,nat,picture&noinfo`)
-      .then((res) => res.json())
-      .then((res) => {
-        setData(res.results);
-        setList(res.results);
-        console.log(res.results)
-      });
+    // fetchPost();
+    setList(["Task name", "Task name", "Task name", "Task name"])
     console.log("todos1:", todos);
 
   }, []);
@@ -70,47 +64,34 @@ const Todo = () => {
             />
           </div>
 
-          <div className="btn-container">
-            <button type="submit" className="btn" onClick={addTodo}>
-              Submit
-            </button>
-          </div>
-        </div>
-
-        {/* <div className="todo-content">
-                    {
-                        todos?.map((todo, i) => (
-                            <p key={i}>
-                                STT: {i} - Content: {todo}
-                            </p>
-                        ))
-                    }
-                </div> */}
-
-        <div className="todo-content">
-          {todos?.map((todo, i) => (
-            <p key={i}>{todo.todo}</p>
-          ))}
         </div>
 
         <List
-          className="demo-loadmore-list"
           itemLayout="horizontal"
-          dataSource={list}
-          renderItem={(item) => (
+          dataSource={[""]}
+          renderItem={() => (
             <List.Item
               actions={[
-                <button key="list-loadmore-edit">Edit Deadline</button>,
-                <button key="list-loadmore-more">Edit Assign</button>,
+                <div>
+                  
+                  <Button className="hi" onClick={() => {
+                  alert("Edit Deadline")
+                }} key="edit-deadline">Edit Deadline</Button>
+                <Button onClick={() => {
+                  alert("Edit Assign")
+                }} key="edit-assign">Edit Assign</Button>
+                </div>,
+                <div>Creator</div>,
+                <h5 onClick={() => {
+                  alert("handle Check")
+                }} key="check">Done</h5>,
               ]}
             >
-              <Skeleton title={false} loading={item.loading} active>
-                <List.Item.Meta
-                  title={item.name?.last}
-                  description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                />
-                <div>New</div>
-              </Skeleton>
+
+              <List.Item.Meta
+                title={`Taskname`}
+              />
+              <div>Status</div>
             </List.Item>
           )}
         />

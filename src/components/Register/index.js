@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Input, Modal } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
@@ -7,11 +7,16 @@ import { getAuth } from 'firebase/auth';
 import classNames from "classnames/bind";
 import styles from "./Register.module.scss";
 import { app } from '../../firebase';
+import { collection, doc, getDocs, getFirestore, updateDoc } from "firebase/firestore";
 
 const cx = classNames.bind(styles);
 const auth = getAuth(app);
 
 function Register() {
+
+    const db = getFirestore(app);
+    const [users, setUsers] = useState([]);
+
     const [title, setTitle] = useState("");
     const [detail, setDetail] = useState("");
     const navigate = useNavigate();
@@ -23,8 +28,26 @@ function Register() {
     ] = useCreateUserWithEmailAndPassword(auth);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    // getdata function
+    const fetchData = async () => {
+        await getDocs(collection(db, `users`))
+            .then((querySnapshot) => {
+                const newUsers = querySnapshot.docs.map((doc) => doc.data());
+                console.log("userEmails:", newUsers[0].userEmails);
+                setUsers(newUsers[0].userEmails);
+            })
+            .catch((error) => console.log(error));
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
 
     async function onFinish(values) {
+        if(!users.includes(values.email)) {
+            setUsers(prev => prev.push((values.email)))
+        }
 
         // Validation
         if (!values.email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
@@ -42,28 +65,27 @@ function Register() {
                 showModal();
             } else {
                 createUserWithEmailAndPassword(values.email, values.password)
-                    .then(res => {
+                    .then(async res => {
                         if (!res) {
                             setTitle("Register isn't success");
                             setDetail("Please check email or passwork");
                             showModal();
                         } else {
-                            console.log(res.user.uid);
+                            console.log("users: ", users)
+                            console.log("email: ", values.email)
+                            await updateDoc(doc(db, "users", 'emails'), {
+                                userEmails: users,
+                            });
                             navigate("/todos-list");
                         }
 
                     })
             }
         }
-
-
-
-
     };
 
 
-    const onFinishFailed = (errorInfo) => {
-        console.log("Failed:", errorInfo);
+    const onFinishFailed = () => {
         setTitle("Register isn't success");
         setDetail("You must enter fully the information to register");
         showModal();

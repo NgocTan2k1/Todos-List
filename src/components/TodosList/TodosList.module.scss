@@ -8,6 +8,8 @@
 
 .wrapper {
   width: 100%;
+  height: 753px;
+  max-height: 750px;
   max-height: 100%;
   background: linear-gradient(135deg, #153667, #4e085f);
   padding: 10px;
@@ -15,10 +17,10 @@
 
 .todo-app {
   width: 80%;
-  max-height: 600px;
+  max-height: 700px;
   background: #fff;
   margin: 60px auto 20px;
-  padding: 20px 30px 70px;
+  padding: 20px 30px 10px;
   border-radius: 10px;
   justify-content: center;
 
@@ -36,18 +38,12 @@
   }
 }
 
-.title {
-}
-
-.img-icon {
-}
-
 .form-input {
   display: flex;
   position: relative;
   justify-items: center;
-  justify-content: space-between;
-  width: 80%;
+  justify-content: space-evenly;
+  width: 90%;
   background: #eddef0;
   border-radius: 30px;
   padding-left: 30px;
@@ -56,7 +52,7 @@
 
 .item-input {
   display: block;
-  width: 100%;
+  width: 90%;
   justify-content: space-between;
   margin: auto 4px;
 }
@@ -83,7 +79,6 @@
 
 .label-input {
   position: relative;
-  width: 20%;
 }
 
 .label-input-content::after {
@@ -102,6 +97,7 @@
 
 .label-input-date {
   display: block;
+  margin: 0;
   text-align: center;
   width: 100%;
 }
@@ -128,6 +124,7 @@
   + .input-date {
     width: 100%;
     margin-left: 0px;
+    outline: #fff;
   }
 
   + .input-assign {
@@ -157,11 +154,14 @@
   }
 }
 
-.container-task {
+
+
+.container-task, 
+.container-content {
   display: block;
   text-align: start;
   margin: auto;
-  margin: 30px 10px 0 10px;
+  margin: 0px 10px;
 
   max-height: 300px;
 
@@ -223,4 +223,60 @@
   //     top: 2%;
   //     left: 1%;
   // }
+}
+
+// Modal
+.edit-deadline {
+  width: 100px;
+}
+
+.unchecked{
+
+}
+
+.checked {
+  text-decoration: line-through;  
+}
+
+.container-content {
+  padding-right: 1px;
+  margin-bottom: 12px;
+}
+
+.btn-finish {
+  min-width: 60px;
+  // color: #000;
+}
+
+.tag-creator {
+  min-width: 200px;
+  // color: #000;
+}
+.task-action{
+  min-width: 220px;
+  // color: #000;
+}
+
+.btn-logout {
+  position: absolute;
+  bottom: 9%;
+  right: 15%;
+}
+
+.tag-status {
+  padding: 0 10px;
+  text-align: center;
+  min-width: 140px;
+  max-width: 140px;
+}
+
+.tag-assign {
+  padding: 0 10px;
+  text-align: center;
+  min-width: 180px;
+  max-width: 180px;
+}
+
+.deadline {
+  margin: 0px 0;
 }

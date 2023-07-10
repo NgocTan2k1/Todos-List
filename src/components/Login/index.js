@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState } from "react";
 import { Button, Form, Input, Modal } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { getAuth } from 'firebase/auth';
@@ -17,19 +17,22 @@ function Login() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [title, setTitle] = useState("");
     const [detail, setDetail] = useState("");
+
+
     const [
         signInWithEmailAndPassword,
     ] = useSignInWithEmailAndPassword(auth);
 
     const [user, loading, error] = useAuthState(auth);
-    if(!loading) {
-        if(user) {
+    if (!loading) {
+        if (user) {
             navigate("/todos-list");
         }
     }
 
+    
+
     const onFinish = (values) => {
-        console.log("Success:", values);
 
         // Validation
         if (!values.email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
@@ -48,7 +51,6 @@ function Login() {
                         setDetail("Email or password is not true");
                         showModal()
                     } else {
-                        console.log(res);
                         navigate("/todos-list")
                     }
 
@@ -56,8 +58,6 @@ function Login() {
         }
     };
     const onFinishFailed = (errorInfo) => {
-        console.log("Failed:", errorInfo);
-        console.log("ERROR");
         setDetail("You must enter fully the information to login");
         showModal();
     };
